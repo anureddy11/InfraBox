@@ -29,3 +29,4 @@ User Story 5: As a capacity planner, I would live to have access to multiple rep
     3. Balance across Spines, DCs for a PoP
     4. Devices live vs repair state
 
+User Story 6: As a Capacity Planner, for a specfic number and type of servers I want the application to best fit the in the specified PoP and generate BOM
