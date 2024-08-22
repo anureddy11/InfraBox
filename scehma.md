@@ -8,6 +8,7 @@
 | name       | string    | not null, unique              |
 | city       | string    | not null                      |
 | country    | string    | not null                      |
+| region     | string    | not null                      |
 | status     | string    | not null                      |
 | created_at | timestamp | default=current timestamp     |
 | updated_at | timestamp | default=current timestamp     |
