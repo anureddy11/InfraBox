@@ -1,0 +1,19 @@
+/* PopByCityPage.css */
+.pop-by-city-container {
+    padding: 20px;
+}
+
+.rack-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rack-table th, .rack-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.rack-table th {
+    background-color: #f4f4f4;
+}

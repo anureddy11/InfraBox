@@ -3,6 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import LandingPage from '../components/LandingPage';
 import Layout from './Layout';
+import PopByCityPage from '../components/PopByCityPage';
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupFormPage />,
+      },
+      {
+        path: "/pop/:city",
+        element: <PopByCityPage />,
       },
     ],
   },
