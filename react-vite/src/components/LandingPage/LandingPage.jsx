@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import cities from './cityData'; // Ensure the path is correct
 import './LandingPage.css';
-import cities from './cityData'; // Ensure this path is correct
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
@@ -8,6 +8,8 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { thunkGetPops } from '../../redux/pops'; // Adjust the path as needed
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -15,7 +17,25 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+// Function to find city coordinates
+const getCityCoordinates = (cityName) => {
+  const city = cities.find(c => c.city === cityName);
+  return city ? { latitude: city.latitude, longitude: city.longitude } : { latitude: 0, longitude: 0 };
+};
+
 const LandingPage = () => {
+  const dispatch = useDispatch();
+  const pops = useSelector(state => state.pops.pops); // Adjust selector based on your state structure
+
+  useEffect(() => {
+    dispatch(thunkGetPops());
+  }, [dispatch]);
+
+  // Ensure that pops is available before rendering the map
+  if (!pops) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="landingpage-container">
       <div className="landingpage-header">
@@ -37,18 +57,26 @@ const LandingPage = () => {
             url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
           />
           <MarkerClusterGroup>
-            {cities.map((city, index) => (
-              <Marker
-                key={index}
-                position={[city.latitude, city.longitude]}
-              >
-                <Popup>
-                  <strong>{city.city}</strong><br />
-                  Latitude: {city.latitude}<br />
-                  Longitude: {city.longitude}
-                </Popup>
-              </Marker>
-            ))}
+            {pops.map((pop, index) => {
+              const { latitude, longitude } = getCityCoordinates(pop.city);
+              // Calculate the number of racks and total rack slots
+              const numberOfRacks = pop.racks ? pop.racks.length : 0;
+              const totalRackSlots = pop.racks
+                ? pop.racks.reduce((total, rack) => total + (rack.rack_slots ? rack.rack_slots.length : 0), 0)
+                : 0;
+              return (
+                <Marker
+                  key={index}
+                  position={[latitude, longitude]}
+                >
+                  <Popup>
+                    <strong>{pop.city}</strong><br />
+                    Racks: {numberOfRacks}<br />
+                    Servers: {totalRackSlots}
+                  </Popup>
+                </Marker>
+              );
+            })}
           </MarkerClusterGroup>
         </MapContainer>
       </div>
