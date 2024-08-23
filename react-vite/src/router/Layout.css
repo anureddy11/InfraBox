@@ -1,0 +1,18 @@
+/* Layout.css */
+
+.layout-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main-content {
+    margin-left: 250px; /* Offset for the sidebar width */
+    width: calc(100% - 250px); /* Adjust main content width */
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar-closed ~ .main-content {
+    margin-left: 0;
+    width: 100%;
+}

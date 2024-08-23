@@ -4,21 +4,25 @@ import { useDispatch } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
+import "./Layout.css";
 
 export default function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
-    <>
-      <ModalProvider>
-        <Navigation />
+    <div className="layout-container">
+      <Navigation />
+      <main className="main-content">
         {isLoaded && <Outlet />}
+      </main>
+      <ModalProvider>
         <Modal />
       </ModalProvider>
-    </>
+    </div>
   );
 }
