@@ -21,3 +21,12 @@ class RackSlot(db.Model):
 
     # Relationships
     rack = db.relationship('Rack', back_populates='rack_slots')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'rack_id': self.rack_id,
+            'server': self.server,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }

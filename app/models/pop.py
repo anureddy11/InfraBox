@@ -24,3 +24,17 @@ class Pop(db.Model):
 
     # Relationships
     racks = db.relationship('Rack', back_populates='pop')
+
+    # Method to convert model instance to dictionary
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'city': self.city,
+            'country': self.country,
+            'region': self.region,
+            'status': self.status,
+            'racks': [rack.to_dict() for rack in self.racks],
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }

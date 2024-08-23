@@ -24,3 +24,15 @@ class Rack(db.Model):
     # Relationships
     pop = db.relationship('Pop', back_populates='racks')
     rack_slots = db.relationship('RackSlot', back_populates='rack')
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "max_ru": self.max_ru,
+            "max_kw": self.max_kw,
+            'rack_slots': [rack_slot.to_dict() for rack_slot in self.rack_slots],
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+        }
