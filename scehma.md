@@ -129,9 +129,7 @@
 | id          | UUID      | primary key                    |
 | rack_id     | UUID      | foreign key, references `Rack(id)` |
 | server_id   | UUID      | foreign key, references `Device(id)` |
-| ru_position | integer   | not null                       |
-| role        | string    | not null                       |
- status       | string    | not null                       |
+ server      | string    | not null                       |
 | created_at  | timestamp | default=current timestamp      |
 | updated_at  | timestamp | default=current timestamp      |
 
