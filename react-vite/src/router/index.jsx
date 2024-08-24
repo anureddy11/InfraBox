@@ -4,6 +4,8 @@ import SignupFormPage from '../components/SignupFormPage';
 import LandingPage from '../components/LandingPage';
 import Layout from './Layout';
 import PopByCityPage from '../components/PopByCityPage';
+import AllPoPsPage from '../components/AllPoPsPage';
+import CreateNewPop from '../components/CreateNewPoP/CreateNewPop';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +14,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />,
+      },
+      {
+        path: "/all",
+        element: <AllPoPsPage />,
       },
       {
         path: "login",
@@ -24,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "/pop/:city",
         element: <PopByCityPage />,
+      },
+      {
+        path: "/pop/new",
+        element: <CreateNewPop />,
       },
     ],
   },

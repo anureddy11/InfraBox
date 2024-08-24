@@ -24,7 +24,7 @@ function Navigation() {
           <li className="menu">
             <span>Organization</span>
             <ul className="submenu">
-              <li><NavLink to="/sites">Sites</NavLink></li>
+              <li><NavLink to="/all">Sites</NavLink></li>
               <li><NavLink to="/racks">Racks</NavLink></li>
               <li><NavLink to="/contracts">Contracts</NavLink></li>
               <li><NavLink to="/elevations">Elevations</NavLink></li>

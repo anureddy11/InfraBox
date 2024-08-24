@@ -125,6 +125,10 @@ const cities = [
     {"city": "Roscommon", "latitude": 53.7328, "longitude": -8.1841},
     {"city": "Cahir", "latitude": 52.3617, "longitude": -7.9805},
     {"city": "Callan", "latitude": 52.6187, "longitude": -7.2350},
+    {"city": "Ho Chi Minh City", "latitude": 10.7626, "longitude": 106.6602},  // Example coordinates
+    {"city": "Shagiai", "latitude": 34.3416, "longitude": 108.9398},  // Example coordinates
+    {"city": "Beijing", "latitude": 39.9042, "longitude": 116.4074},
+    {"city": "Nairobi", "latitude": -1.2864, "longitude": 36.8172}
 ]
 
 

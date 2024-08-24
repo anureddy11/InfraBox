@@ -1,0 +1,29 @@
+.pops-table-container {
+    max-height: 80vh; /* Adjust this value as needed */
+    overflow-y: auto;
+  }
+
+  .pops-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .pops-table th, .pops-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .create-new-pop-button {
+    display: inline-block;
+    margin-bottom: 10px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+
+  .create-new-pop-button:hover {
+    background-color: #0056b3;
+  }
+

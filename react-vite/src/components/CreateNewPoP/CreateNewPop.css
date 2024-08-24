@@ -1,0 +1,37 @@
+.create-new-pop-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .create-new-pop-container h1 {
+    margin-bottom: 20px;
+  }
+
+  .create-new-pop-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .create-new-pop-container input,
+  .create-new-pop-container select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .create-new-pop-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .create-new-pop-container button:hover {
+    background-color: #0056b3;
+  }
+

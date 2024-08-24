@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models.db import db, environment, SCHEMA
 from app.models.pop import Pop
+from app.forms.pop_form import PopForm
 
 pop_routes = Blueprint('pop', __name__, url_prefix='/pop')
 
@@ -35,17 +36,24 @@ def get_pop_by_city(city):
 @login_required
 def create_pop():
     data = request.json
-    new_pop = Pop(
-        name=data.get('name'),
-        city=data.get('city'),
-        country=data.get('country'),
-        region=data.get('region'),
-        status=data.get('status')
-    )
-    db.session.add(new_pop)
-    db.session.commit()
 
-    return jsonify(new_pop.to_dict()), 201
+    form = PopForm(data=data)
+    form.csrf_token.data = request.cookies.get('csrf_token')  # Use get() to avoid KeyError
+
+    if form.validate_on_submit():
+        new_pop = Pop(
+            name=form.name.data,
+            city=form.city.data,
+            country=form.country.data,
+            region=form.region.data,
+            status=form.status.data
+        )
+        db.session.add(new_pop)
+        db.session.commit()
+
+        return jsonify(new_pop.to_dict()), 201
+
+    return jsonify({"errors": form.errors}), 400
 
 #update a pop
 @pop_routes.route('/<string:city>', methods=["PUT"])
