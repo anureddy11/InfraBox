@@ -1,19 +1,37 @@
-/* PopByCityPage.css */
-.pop-by-city-container {
-    padding: 20px;
+.pop-action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.rack-table {
-    width: 100%;
-    border-collapse: collapse;
+.action-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.update-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.update-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
 }
 
 .rack-table th, .rack-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.rack-table th {
-    background-color: #f4f4f4;
+    padding: 10px;
+    text-align: center;
 }

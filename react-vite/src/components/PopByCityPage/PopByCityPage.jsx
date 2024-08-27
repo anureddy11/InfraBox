@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import UpdatePoPForm from "../UpdatePoPForm/UpdatePoPForm";
+import { thunkDeletePop } from "../../redux/pops"; // Import the delete thunk
 import "./PopByCityPage.css";
-
 
 function PopByCityPage() {
     const { city } = useParams();
     const pops = useSelector(state => state.pops.pops);
     const pop = pops[city];
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [isEditing, setIsEditing] = useState(false);
 
@@ -22,13 +22,25 @@ function PopByCityPage() {
         setIsEditing(!isEditing);
     };
 
+    const handleDeleteClick = () => {
+        if (window.confirm(`Are you sure you want to delete the Pop in ${city}?`)) {
+            dispatch(thunkDeletePop(pop.name));
+            navigate('/'); // Redirect to home or any other page after deletion
+        }
+    };
+
     return (
         <div className="pop-by-city-container">
             <h1>Welcome to {city}'s page</h1>
             <h2>Rack Information</h2>
-            <button onClick={handleEditClick}>
-                {isEditing ? "Cancel Update" : "Update Pop's Status"}
-            </button>
+            <div className="button-container">
+                <button className="edit-button" onClick={handleEditClick}>
+                    {isEditing ? "Cancel Update" : "Update Pop's Status"}
+                </button>
+                <button className="delete-button" onClick={handleDeleteClick}>
+                    Delete Pop
+                </button>
+            </div>
 
             {isEditing && <UpdatePoPForm pop={pop} />}
 

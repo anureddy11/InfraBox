@@ -25,6 +25,24 @@ const deletePop = (popName) => ({
     payload: popName,
 });
 
+//Delete a Pop
+
+export const thunkDeletePop = (name) => async(dispatch) =>{
+    try {
+        const response = await fetch(`/api/pop/${name}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete payment');
+        }
+
+        dispatch(deletePop(name));
+    } catch (error) {
+        console.error("Failed to delete pops:", error);
+    }
+}
+
 // Thunk for Fetching Pops
 export const thunkGetPops = () => async (dispatch) => {
     try {
@@ -122,6 +140,16 @@ const popsReducer = (state = initialState, action) => {
                     [action.payload.name]: action.payload
                 }
             };
+
+        case DELETE_POP:
+            return {
+                ...state,
+                pops: {
+                     ...state.pops,
+                    [action.payload.name]: action.payload
+                }
+            };
+
 
         default:
             return state;
