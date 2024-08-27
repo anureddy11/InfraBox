@@ -54,9 +54,9 @@ const LandingPage = () => {
                         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
                     />
                     <MarkerClusterGroup>
-                        {Object.keys(pops).map((cityName) => {
-                            const pop = pops[cityName];
-                            const { latitude, longitude } = getCityCoordinates(cityName, cities);
+                        {Object.values(pops).map((pop) => {
+                            const { city } = pop;
+                            const { latitude, longitude } = getCityCoordinates(city);
                             // Calculate the number of racks and total rack slots
                             const numberOfRacks = pop.racks ? pop.racks.length : 0;
                             const totalRackSlots = pop.racks
@@ -64,15 +64,16 @@ const LandingPage = () => {
                                 : 0;
                             return (
                                 <Marker
-                                    key={cityName}
+                                    key={pop.id}
                                     position={[latitude, longitude]}
                                 >
                                     <Popup>
                                         <strong>
-                                            <Link to={`/pop/${cityName}`}>
-                                                {cityName}
+                                            <Link to={`/pop/${pop.name}`}>
+                                                {pop.name}
                                             </Link>
                                         </strong><br />
+                                        City: {city}<br />
                                         Racks: {numberOfRacks}<br />
                                         Servers: {totalRackSlots}
                                     </Popup>

@@ -60,7 +60,7 @@ const popsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_POPS:
             const popsByCity = action.payload.reduce((acc, pop) => {
-                acc[pop.city] = pop;
+                acc[pop.name] = pop;
                 return acc;
             }, {});
             return {

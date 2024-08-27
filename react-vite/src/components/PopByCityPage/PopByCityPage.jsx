@@ -7,7 +7,7 @@ import "./PopByCityPage.css";
 
 
 function PopByCityPage() {
-    const { city } = useParams(); // Extract the city name from the URL parameters
+    const { city } = useParams(); // Extract the city code from the URL parameters
     const pops = useSelector(state => state.pops.pops); // Access pops from the Redux store
 
     // Get the pop data for the city
