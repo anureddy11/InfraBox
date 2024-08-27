@@ -3,25 +3,35 @@ import { thunkLogin } from "../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import UpdatePoPForm from "../UpdatePoPForm/UpdatePoPForm";
 import "./PopByCityPage.css";
 
 
 function PopByCityPage() {
-    const { city } = useParams(); // Extract the city code from the URL parameters
-    const pops = useSelector(state => state.pops.pops); // Access pops from the Redux store
-
-    // Get the pop data for the city
+    const { city } = useParams();
+    const pops = useSelector(state => state.pops.pops);
     const pop = pops[city];
+
+    const [isEditing, setIsEditing] = useState(false);
 
     if (!pop) {
         return <div className="pop-by-city-container">Pop data not found for {city}</div>;
     }
 
-    // Render the rack information in a table format
+    const handleEditClick = () => {
+        setIsEditing(!isEditing);
+    };
+
     return (
         <div className="pop-by-city-container">
             <h1>Welcome to {city}'s page</h1>
             <h2>Rack Information</h2>
+            <button onClick={handleEditClick}>
+                {isEditing ? "Cancel Update" : "Update Pop's Status"}
+            </button>
+
+            {isEditing && <UpdatePoPForm pop={pop} />}
+
             <table className="rack-table">
                 <thead>
                     <tr>
@@ -30,8 +40,7 @@ function PopByCityPage() {
                         <th>Max KW</th>
                         <th>Max RU</th>
                         <th>Number of Servers</th>
-                        <th>Rack Utilizaiton </th>
-
+                        <th>Rack Utilization</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,7 +61,7 @@ function PopByCityPage() {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="3">No racks available</td>
+                            <td colSpan="6">No racks available</td>
                         </tr>
                     )}
                 </tbody>

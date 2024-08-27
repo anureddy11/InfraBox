@@ -56,12 +56,12 @@ def create_pop():
     return jsonify({"errors": form.errors}), 400
 
 #update a pop
-@pop_routes.route('/<string:city>', methods=["PUT"])
+@pop_routes.route('/<string:name>', methods=["PUT"])
 @login_required
-def update_pop_by_city(city):
-    pop = Pop.query.filter_by(city=city).first()
+def update_pop_by_city(name):
+    pop = Pop.query.filter_by(name=name).first()
     if not pop:
-        return jsonify({"error": f"Pop in {city} not found"}), 404
+        return jsonify({"error": f"Pop in {name} not found"}), 404
 
     data = request.json
     pop.name = data.get('name', pop.name)
@@ -76,13 +76,13 @@ def update_pop_by_city(city):
 
 
 #delete a pop
-@pop_routes.route('/<string:city>', methods=["DELETE"])
+@pop_routes.route('/<string:name>', methods=["DELETE"])
 @login_required
-def delete_pop_by_city(city):
-    pop = Pop.query.filter_by(city=city).first()
+def delete_pop_by_city(name):
+    pop = Pop.query.filter_by(name=name).first()
     if pop:
         db.session.delete(pop)
         db.session.commit()
-        return jsonify({"message": f"Pop in {city} deleted successfully"}), 200
+        return jsonify({"message": f"Pop in {name} deleted successfully"}), 200
     else:
-        return jsonify({"error": f"Pop in {city} not found"}), 404
+        return jsonify({"error": f"Pop in {name} not found"}), 404

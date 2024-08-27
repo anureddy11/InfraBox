@@ -1,6 +1,8 @@
 // Action Type
 const GET_POPS = 'GET_POPS';
 const CREATE_POP = 'CREATE_POP';
+const UPDATE_POP = 'UPDATE_POP';
+const DELETE_POP = 'DELETE_POP';
 
 // Action Creator
 const getPops = (popsData) => ({
@@ -11,6 +13,16 @@ const getPops = (popsData) => ({
 const createPop = (popData) => ({
     type: CREATE_POP,
     payload: popData,
+});
+
+const updatePop = (popData) => ({
+    type: UPDATE_POP,
+    payload: popData,
+});
+
+const deletePop = (popName) => ({
+    type: DELETE_POP,
+    payload: popName,
 });
 
 // Thunk for Fetching Pops
@@ -50,6 +62,31 @@ export const thunkCreatePop = (popData) => async (dispatch) => {
     }
 };
 
+//Update a PoP
+export const thunkUpdatePop = (popName, popData) => async (dispatch) => {
+    try {
+        const response = await fetch(`/api/pop/${popName}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(popData),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            dispatch(updatePop(data));
+        } else {
+            console.error("Failed to update pop:", data.error);
+        }
+    } catch (error) {
+        console.error("Failed to update pop:", error);
+    }
+};
+
+
+
+
 
 const initialState = {
     pops: []
@@ -74,6 +111,15 @@ const popsReducer = (state = initialState, action) => {
                 pops: {
                     ...state.pops,
                     [action.payload.city]: action.payload
+                }
+            };
+
+        case UPDATE_POP:
+            return {
+                ...state,
+                pops: {
+                     ...state.pops,
+                    [action.payload.name]: action.payload
                 }
             };
 
