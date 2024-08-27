@@ -28,12 +28,12 @@ const PopsTable = () => {
             const pop = pops[key];
             return (
               <tr key={key}>
-                <td>{pop.name}</td>
                 <td>
-                  <NavLink to={`/pop/${pop.city}`}>
-                    {pop.city}
+                  <NavLink to={`/pop/${pop.name}`}>
+                    {pop.name}
                   </NavLink>
                 </td>
+                <td>{pop.city}</td>
                 <td>{pop.country}</td>
                 <td>{pop.region}</td>
                 <td>{pop.status}</td>
