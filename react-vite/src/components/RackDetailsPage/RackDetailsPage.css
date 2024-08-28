@@ -1,0 +1,56 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.rack-details-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.rack-header {
+    margin-bottom: 20px;
+}
+
+.rack-grid-container {
+    flex: 1; /* Allow container to grow */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+}
+
+.rack-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1px; /* Space between slots */
+}
+
+.rack-slot {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa; /* Light gray background for empty slots */
+    color: #6c757d; /* Gray text color */
+    min-height: 40px; /* Adjust height as needed */
+    box-sizing: border-box;
+}
+
+.rack-slot.occupied {
+    background-color: #d4edda; /* Green background for occupied slots */
+    color: #155724; /* Dark green text color */
+}
+
+.rack-slot.empty {
+    background-color: #f8f9fa; /* Light gray background for empty slots */
+    color: #6c757d; /* Gray text color */
+}
+
+.no-rack {
+    padding: 20px;
+    font-size: 18px;
+    color: #b00;
+}
+

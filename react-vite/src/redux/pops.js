@@ -107,7 +107,8 @@ export const thunkUpdatePop = (popName, popData) => async (dispatch) => {
 
 
 const initialState = {
-    pops: []
+    pops: [],
+    racks: []
 };
 
 // Pops Reducer
@@ -118,9 +119,16 @@ const popsReducer = (state = initialState, action) => {
                 acc[pop.name] = pop;
                 return acc;
             }, {});
+
+            const racksByPop = action.payload.reduce((acc, pop) => {
+                acc[pop.name] = pop.racks
+                return acc;
+            }, {});
+
             return {
                 ...state,
-                pops:popsByCity
+                pops:popsByCity,
+                racks:racksByPop
             };
 
         case CREATE_POP:

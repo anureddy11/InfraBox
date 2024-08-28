@@ -6,6 +6,7 @@ import Layout from './Layout';
 import PopByCityPage from '../components/PopByCityPage';
 import AllPoPsPage from '../components/AllPoPsPage';
 import CreateNewPop from '../components/CreateNewPoP/CreateNewPop';
+import RackDetailsPage from '../components/RackDetailsPage';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
         path: "/pop/new",
         element: <CreateNewPop />,
       },
+      {
+        path: "/rack/:popName/:rackId",
+        element: <RackDetailsPage />,
+      }
     ],
   },
 ]);
