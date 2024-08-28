@@ -7,6 +7,7 @@ import PopByCityPage from '../components/PopByCityPage';
 import AllPoPsPage from '../components/AllPoPsPage';
 import CreateNewPop from '../components/CreateNewPoP/CreateNewPop';
 import RackDetailsPage from '../components/RackDetailsPage';
+import AllRacksPage from '../components/AllRacksPage';
 
 export const router = createBrowserRouter([
   {
@@ -39,7 +40,12 @@ export const router = createBrowserRouter([
       {
         path: "/rack/:popName/:rackId",
         element: <RackDetailsPage />,
+      },
+      {
+        path: "/racks",
+        element: <AllRacksPage />,
       }
+
     ],
   },
 ]);
