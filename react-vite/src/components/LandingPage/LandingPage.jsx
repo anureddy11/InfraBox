@@ -55,7 +55,8 @@ const LandingPage = () => {
                     />
                     <MarkerClusterGroup>
                         {Object.values(pops).map((pop) => {
-                            const { city } = pop;
+                            console.log(pop.city)
+                            const city  = pop.city;
                             const { latitude, longitude } = getCityCoordinates(city);
                             // Calculate the number of racks and total rack slots
                             const numberOfRacks = pop.racks ? pop.racks.length : 0;
