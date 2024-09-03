@@ -57,7 +57,7 @@ const LandingPage = () => {
                         {Object.values(pops).map((pop) => {
                             const city  = pop.city;
                             const { latitude, longitude } = getCityCoordinates(city);
-                            console.log(latitude, longitude)
+                            // console.log(latitude, longitude)
                             // Calculate the number of racks and total rack slots
                             const numberOfRacks = pop.racks ? pop.racks.length : 0;
                             const totalRackSlots = pop.racks

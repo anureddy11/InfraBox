@@ -16,8 +16,8 @@ const RackDetailsPage = () => {
     }
 
     // Log rack and rackSlots for debugging
-    console.log('Rack:', rack);
-    console.log('Rack Slots:', rack.rack_slots);
+    // console.log('Rack:', rack);
+    // console.log('Rack Slots:', rack.rack_slots);
 
     // Extract existing slots and sort them by slot_id
     const rackSlots = [...rack.rack_slots];
@@ -64,4 +64,3 @@ const RackDetailsPage = () => {
 };
 
 export default RackDetailsPage;
-
