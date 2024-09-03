@@ -43,14 +43,14 @@ const AllRacksPage = () => {
                             <p><strong>Max KW:</strong> {rack.max_kw}</p>
                             <div className="rack-slots-table">
                                 {Array.from({ length: rack.max_ru }, (_, index) => {
-                                    // Find the slot based on its index
-                                    const slot = rack.rack_slots[index];
+                                    // Find the slot based on its slot_id
+                                    const slot = rack.rack_slots.find(slot => parseInt(slot.slot_id, 10) === index + 1);
                                     return (
                                         <div
                                             key={index}
                                             className={`rack-slot ${slot && slot.server ? 'occupied' : 'empty'}`}
                                         >
-                                            {slot && slot.server ? slot.server : ''}
+                                            {slot && slot.server ? `Slot ${slot.slot_id}: ${slot.server}` : `Slot ${index + 1}: Empty`}
                                         </div>
                                     );
                                 })}
@@ -66,4 +66,3 @@ const AllRacksPage = () => {
 };
 
 export default AllRacksPage;
-

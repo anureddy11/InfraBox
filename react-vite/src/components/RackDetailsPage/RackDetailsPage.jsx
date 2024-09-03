@@ -15,17 +15,27 @@ const RackDetailsPage = () => {
         return <div className="no-rack">No rack found with ID {rackId} for Pop {popName}.</div>;
     }
 
-    // Fill in empty slots to match max_ru
+    // Log rack and rackSlots for debugging
+    console.log('Rack:', rack);
+    console.log('Rack Slots:', rack.rack_slots);
+
+    // Extract existing slots and sort them by slot_id
     const rackSlots = [...rack.rack_slots];
-    const filledSlotIds = rackSlots.map(slot => slot.slot_id);
+    rackSlots.sort((a, b) => parseInt(a.slot_id) - parseInt(b.slot_id));
+
+    // Create an array for display, filling in empty slots
+    const displaySlots = [];
     for (let i = 1; i <= rack.max_ru; i++) {
-        if (!filledSlotIds.includes(i)) {
-            rackSlots.push({ slot_id: i, server: null });
+        const slot = rackSlots.find(slot => parseInt(slot.slot_id) === i);
+        if (slot) {
+            displaySlots.push(slot);
+        } else {
+            displaySlots.push({ id: null, slot_id: i, server: null });
         }
     }
 
-    // Sort slots by slot_id to ensure they are displayed in order
-    rackSlots.sort((a, b) => a.slot_id - b.slot_id);
+    // Log displaySlots for debugging
+    console.log('Display Slots:', displaySlots);
 
     return (
         <div className="rack-details-container">
@@ -38,11 +48,15 @@ const RackDetailsPage = () => {
             <h3>Rack Slots</h3>
             <div className="rack-grid-container">
                 <div className="rack-grid">
-                    {rackSlots.map((slot, index) => (
-                        <div key={index} className={slot.server ? 'rack-slot occupied' : 'rack-slot empty'}>
-                            Slot {slot.slot_id}: {slot.server ? slot.server : 'Empty'}
-                        </div>
-                    ))}
+                    {displaySlots.length > 0 ? (
+                        displaySlots.map((slot, index) => (
+                            <div key={index} className={slot.server ? 'rack-slot occupied' : 'rack-slot empty'}>
+                                {slot.server ? `Slot ${slot.slot_id}: ${slot.server}` : `Slot ${slot.slot_id}: Empty`}
+                            </div>
+                        ))
+                    ) : (
+                        <div className="no-slots">No slots available</div>
+                    )}
                 </div>
             </div>
         </div>
