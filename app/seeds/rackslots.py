@@ -29,13 +29,23 @@ def seed_rack_slots():
         current_type_index = 0
         current_type = selected_types[current_type_index]
 
+        used_slots = set()  # To keep track of used slot_ids
+
         for i in range(filled_slots):
             if i > 0 and i % (filled_slots // 2) == 0:  # Switch type after half of the slots
                 current_type_index = 1 - current_type_index
                 current_type = selected_types[current_type_index]
 
+            # Generate a unique slot_id within the available range
+            while True:
+                slot_id = random.randint(1, num_slots)
+                if slot_id not in used_slots:
+                    used_slots.add(slot_id)
+                    break
+
             rack_slot = RackSlot(
                 rack_id=rack.id,
+                slot_id=slot_id,
                 server=f'Server Gen {current_type["gen"]}',
                 created_at=datetime.now(timezone.utc),
                 updated_at=datetime.now(timezone.utc)

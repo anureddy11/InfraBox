@@ -1,4 +1,12 @@
 const cities = [
+    {"city": "Alexandria", "latitude": 31.1980, "longitude": 29.9775},
+    {"city": "Antwerp", "latitude": 51.2235, "longitude": 4.4021},
+    {"city": "Auckland", "latitude": -36.8485, "longitude": 174.7633},
+    {"city": "Baku", "latitude": 40.3998, "longitude": 49.8952},
+    {"city": "Atlanta", "latitude": 33.7490, "longitude": -84.3879},
+    {"city": "Frankfurt", "latitude": 50.1109, "longitude": 8.6821},
+    {"city": "Osaka", "latitude": 34.6937, "longitude": 135.5257},
+    {"city": "Chennai", "latitude": 13.0827, "longitude": 80.2782},
     {"city": "São Paulo", "latitude": -23.5505, "longitude": -46.6333},
     {"city": "Dublin", "latitude": 53.3331, "longitude": -6.2489},
     {"city": "Seattle", "latitude": 47.6062, "longitude": -122.3321},
