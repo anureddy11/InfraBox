@@ -7,10 +7,12 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import popsReducer from "./pops";
+import rackSlotsReducer from "./rack_slots";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  pops: popsReducer
+  pops: popsReducer,
+  current_rack: rackSlotsReducer
 });
 
 let enhancer;

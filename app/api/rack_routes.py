@@ -9,17 +9,32 @@ from app.forms.rack_slot_form import AddSlotForm, UpdateSlotForm
 
 rack_routes = Blueprint('rack', __name__, url_prefix='/rack')
 
+@rack_routes.route('/<int:rack_id>/slots', methods=['GET'])
+def get_all_rack_slots(rack_id):
+    # Fetch all slots for the given rack_id
+    slots = RackSlot.query.filter_by(rack_id=rack_id).all()
+
+    if not slots:
+        return jsonify({"message": "No slots found for the given rack_id"}), 404
+
+    # Convert the slots to a dictionary
+    slots_data = [slot.to_dict() for slot in slots]
+
+    return jsonify(slots_data), 200
+
 
 @rack_routes.route('/<int:rack_id>/slot/add', methods=['GET', 'POST'])
 def add_slot(rack_id):
     form = AddSlotForm()
+    form.csrf_token.data = request.cookies.get('csrf_token') 
     if form.validate_on_submit():
         slot_id = form.slot_id.data
         server = form.server.data
 
-        rack = Rack.query.get(rack_id)
-        if not rack:
-            abort(404, description="Rack not found")
+
+        # rack = Rack.query.get(rack_id)
+        # if not rack:
+        #     abort(404, description="Rack not found")
 
         # Check if slot already exists
         existing_slot = RackSlot.query.filter_by(rack_id=rack_id, slot_id=slot_id).first()

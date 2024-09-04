@@ -8,7 +8,7 @@ import AllPoPsPage from '../components/AllPoPsPage';
 import CreateNewPop from '../components/CreateNewPoP/CreateNewPop';
 import RackDetailsPage from '../components/RackDetailsPage';
 import AllRacksPage from '../components/AllRacksPage';
-import AddServer from '../components/AddServer';
+import AddServer from '../components/AddServerModal';
 
 export const router = createBrowserRouter([
   {
