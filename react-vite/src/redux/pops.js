@@ -25,6 +25,7 @@ const deletePop = (popName) => ({
     payload: popName,
 });
 
+
 //Delete a Pop
 
 export const thunkDeletePop = (name) => async(dispatch) =>{
@@ -108,7 +109,8 @@ export const thunkUpdatePop = (popName, popData) => async (dispatch) => {
 
 const initialState = {
     pops: [],
-    racks: []
+    racks: [],
+    currentRack: null
 };
 
 // Pops Reducer

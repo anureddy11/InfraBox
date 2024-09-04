@@ -8,6 +8,7 @@ import AllPoPsPage from '../components/AllPoPsPage';
 import CreateNewPop from '../components/CreateNewPoP/CreateNewPop';
 import RackDetailsPage from '../components/RackDetailsPage';
 import AllRacksPage from '../components/AllRacksPage';
+import AddServer from '../components/AddServer';
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,12 @@ export const router = createBrowserRouter([
       {
         path: "/racks",
         element: <AllRacksPage />,
-      }
+      },
+      {
+        path: "/rack/:popName/:rackId/:slotId",
+        element: <AddServer />,
+      },
+
 
     ],
   },

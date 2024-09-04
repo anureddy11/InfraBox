@@ -1,10 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './RackDetailsPage.css';
 
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
+    const navigate = useNavigate();
     const racks = useSelector(state => state.pops.racks);
 
     // Safeguard to ensure racks data is available for the specified popName
@@ -14,10 +15,6 @@ const RackDetailsPage = () => {
     if (!rack) {
         return <div className="no-rack">No rack found with ID {rackId} for Pop {popName}.</div>;
     }
-
-    // Log rack and rackSlots for debugging
-    // console.log('Rack:', rack);
-    // console.log('Rack Slots:', rack.rack_slots);
 
     // Extract existing slots and sort them by slot_id
     const rackSlots = [...rack.rack_slots];
@@ -34,8 +31,10 @@ const RackDetailsPage = () => {
         }
     }
 
-    // Log displaySlots for debugging
-    console.log('Display Slots:', displaySlots);
+    // Function to navigate to the add server form
+    const handleAddServerClick = (slotId) => {
+        navigate(`/rack/${popName}/${rackId}/${slotId}`);
+    };
 
     return (
         <div className="rack-details-container">
@@ -51,7 +50,18 @@ const RackDetailsPage = () => {
                     {displaySlots.length > 0 ? (
                         displaySlots.map((slot, index) => (
                             <div key={index} className={slot.server ? 'rack-slot occupied' : 'rack-slot empty'}>
-                                {slot.server ? `Slot ${slot.slot_id}: ${slot.server}` : `Slot ${slot.slot_id}: Empty`}
+                                {slot.server ?
+                                    `Slot ${slot.slot_id}: ${slot.server}` :
+                                    <div>
+                                        Slot {slot.slot_id}: Empty
+                                        <button
+                                            className="add-server-button"
+                                            onClick={() => handleAddServerClick(slot.slot_id)}
+                                        >
+                                            Add Server
+                                        </button>
+                                    </div>
+                                }
                             </div>
                         ))
                     ) : (
