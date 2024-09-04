@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AddServerModal from '../AddServerModal/AddServerModal';
 import './RackDetailsPage.css';
-import { thunkGetRackSlots, thunkAddRackSlot } from '../../redux/rack_slots';
+import { thunkGetRackSlots } from '../../redux/rack_slots';
 
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
     const rackIdInt = parseInt(rackId, 10);
     const racks = useSelector(state => state.pops.racks);
+    const rackSlots = useSelector(state => state.current_rack.rackSlots);
     const dispatch = useDispatch();
 
     const popRacks = racks[popName] || [];
@@ -28,40 +29,22 @@ const RackDetailsPage = () => {
     // Update displaySlots when rack data changes
     useEffect(() => {
         if (rack) {
-            const rackSlots = [...rack.rack_slots];
-            rackSlots.sort((a, b) => parseInt(a.slot_id) - parseInt(b.slot_id));
-
-            const slots = [];
-            for (let i = 1; i <= rack.max_ru; i++) {
-                const slot = rackSlots.find(slot => parseInt(slot.slot_id) === i);
-                if (slot) {
-                    slots.push(slot);
-                } else {
-                    slots.push({ id: null, slot_id: i, server: null });
-                }
-            }
+            const slots = Array.from({ length: rack.max_ru }, (_, i) => {
+                const slot = rackSlots.find(slot => parseInt(slot.slot_id) === i + 1);
+                return slot ? slot : { id: null, slot_id: i + 1, server: null };
+            });
             setDisplaySlots(slots);
         }
-    }, [rack]);
+    }, [rack, rackSlots]);
 
     const handleAddServerClick = (slotId) => {
         setSelectedSlotId(slotId);
         setIsModalOpen(true);
     };
 
-    const handleModalSubmit = async (serverType) => {
-        const slotData = {
-            slot_id: selectedSlotId,
-            server: serverType
-        };
-        // Dispatch thunk to add server slot
-        await dispatch(thunkAddRackSlot(rackIdInt, slotData));
-
-        // Fetch updated rack slots after adding a new server
-        dispatch(thunkGetRackSlots(rackIdInt));
-
-        // Update display slots with the new server
+    const handleModalClose = () => {
         setIsModalOpen(false);
+        setSelectedSlotId(null); // Reset the selected slot when the modal is closed
     };
 
     if (!rack) {
@@ -79,37 +62,33 @@ const RackDetailsPage = () => {
             <h3>Rack Slots</h3>
             <div className="rack-grid-container">
                 <div className="rack-grid">
-                    {displaySlots.length > 0 ? (
-                        displaySlots.map((slot, index) => (
-                            <div key={index} className="rack-slot-container">
-                                <div className={slot.server ? 'rack-slot occupied' : 'rack-slot empty'}>
-                                    {slot.server ? `Slot ${slot.slot_id}: ${slot.server}` : `Slot ${slot.slot_id}: Empty`}
-                                </div>
-                                {!slot.server && (
-                                    <button
-                                        className="add-server-button"
-                                        onClick={() => handleAddServerClick(slot.slot_id)}
-                                    >
-                                        Add Server
-                                    </button>
-                                )}
+                    {displaySlots.map((slot) => (
+                        <div key={slot.slot_id} className="rack-slot-container">
+                            <div className={slot.server ? 'rack-slot occupied' : 'rack-slot empty'}>
+                                {slot.server ? `Slot ${slot.slot_id}: ${slot.server}` : `Slot ${slot.slot_id}: Empty`}
                             </div>
-                        ))
-                    ) : (
-                        <div className="no-slots">No slots available</div>
-                    )}
+                            {!slot.server && (
+                                <button
+                                    className="add-server-button"
+                                    onClick={() => handleAddServerClick(slot.slot_id)}
+                                >
+                                    Add Server
+                                </button>
+                            )}
+                        </div>
+                    ))}
                 </div>
             </div>
             <AddServerModal
                 isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
+                onRequestClose={handleModalClose}
                 popName={popName}
                 rackId={rackIdInt}
                 slotId={selectedSlotId}
-                onSubmit={handleModalSubmit} // Pass this to handle submission
             />
         </div>
     );
 };
 
 export default RackDetailsPage;
+

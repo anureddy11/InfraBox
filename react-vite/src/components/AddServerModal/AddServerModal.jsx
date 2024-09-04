@@ -1,34 +1,31 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
-import { thunkAddRackSlot } from '../../redux/rack_slots'; // Adjust the path to where your thunks are located
-import './AddServerModal.css'; // Custom styles for the modal
+import { thunkAddRackSlot, thunkGetRackSlots } from '../../redux/rack_slots';
+import './AddServerModal.css';
 
-Modal.setAppElement('#root'); // For accessibility
+Modal.setAppElement('#root');
 
-const AddServerModal = ({ isOpen, onRequestClose, popName, rackId, slotId }) => {
+const AddServerModal = ({ isOpen, onRequestClose, rackId, slotId }) => {
     const [serverType, setServerType] = useState('');
     const dispatch = useDispatch();
 
-    // List of server types
     const serverTypes = [
         'Server Gen 9',
         'Server Gen 10',
-        'Server Gen 11' ,
+        'Server Gen 11',
         'Server Gen 12'
     ];
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Prepare server slot data
         const serverSlotData = {
             rack_id: rackId,
             slot_id: slotId,
             server: serverType
         };
-        // Dispatch the thunk to add the server slot
-        dispatch(thunkAddRackSlot(rackId, serverSlotData));
-        // Close modal after submission
+        await dispatch(thunkAddRackSlot(rackId, serverSlotData));
+        await dispatch(thunkGetRackSlots(rackId)); // Refresh the rack slots after adding
         onRequestClose();
     };
 
