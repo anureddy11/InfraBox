@@ -84,13 +84,10 @@ const rackSlotsReducer = (state = initialState, action) => {
         case ADD_RACK_SLOT:
             return {
                 ...state,
-                rackSlots: {
+                rackSlots: [
                     ...state.rackSlots,
-                    [action.payload.rackId]: [
-                        ...(state.rackSlots[action.payload.rackId] || []),
-                        action.payload,
-                    ],
-                },
+                    action.payload,
+                ],
             };
 
         case UPDATE_RACK_SLOT:
