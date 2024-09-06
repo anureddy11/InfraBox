@@ -48,6 +48,7 @@ export const thunkGetRackSlots = (rackId) => async (dispatch) => {
 // Thunk for adding a new server
 export const thunkAddRackSlot = (rackId, slotData) => async (dispatch) => {
     // console.log(slotData)
+    console.log(rackId)
     try {
         const response = await fetch(`/api/rack/${rackId}/slot/add`, {
             method: 'POST',

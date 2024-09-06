@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import AddServerModal from '../AddServerModal/AddServerModal';
 import UpdateServerModal from '../UpdateServerModal/UpdateServerModal';
-import { thunkGetRackSlots, thunkUpdateRackSlot, thunkDeleteRackSlot } from '../../redux/rack_slots';
+import { thunkGetRackSlots, thunkUpdateRackSlot, thunkDeleteRackSlot, thunkAddRackSlot } from '../../redux/rack_slots';
 import './RackDetailsPage.css';
 
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
     const rackIdInt = parseInt(rackId, 10);
+    // console.log(rackIdInt)
     const racks = useSelector(state => state.pops.racks);
     const rackSlots = useSelector(state => state.current_rack.rackSlots);
     const dispatch = useDispatch();
@@ -15,6 +17,7 @@ const RackDetailsPage = () => {
     const popRacks = racks[popName] || [];
     const rack = popRacks.find(rack => rack.id === rackIdInt);
 
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedSlotId, setSelectedSlotId] = useState(null);
     const [displaySlots, setDisplaySlots] = useState([]);
@@ -35,6 +38,27 @@ const RackDetailsPage = () => {
         }
     }, [rack, rackSlots]);
 
+    const handleAddServerClick = (slotId) => {
+        setSelectedSlotId(slotId);
+        setIsAddModalOpen(true);
+    };
+
+    const handleAddModalSubmit = async (serverType) => {
+        console.log(rackIdInt)
+        const slotData = {
+            slot_id: selectedSlotId,
+            server: serverType
+        };
+        await dispatch(thunkAddRackSlot(rackIdInt, slotData));
+        dispatch(thunkGetRackSlots(rackIdInt));
+        setIsAddModalOpen(false);
+    };
+
+    const handleAddModalClose = () => {
+        setIsAddModalOpen(false);
+        setSelectedSlotId(null);
+    };
+
     const handleUpdateServerClick = (slotId) => {
         setSelectedSlotId(slotId);
         setIsUpdateModalOpen(true);
@@ -43,6 +67,8 @@ const RackDetailsPage = () => {
     const handleUpdateServer = async (slotId, serverType) => {
         try {
             await dispatch(thunkUpdateRackSlot(rackIdInt, slotId, { server: serverType }));
+            dispatch(thunkGetRackSlots(rackIdInt));
+            setIsUpdateModalOpen(false);
         } catch (error) {
             console.error('Failed to update rack slot:', error);
         }
@@ -50,6 +76,7 @@ const RackDetailsPage = () => {
 
     const handleDeleteServerClick = (slotId) => {
         dispatch(thunkDeleteRackSlot(rackIdInt, slotId));
+        dispatch(thunkGetRackSlots(rackIdInt));
     };
 
     if (!rack) {
@@ -99,11 +126,20 @@ const RackDetailsPage = () => {
                     ))}
                 </div>
             </div>
+            <AddServerModal
+                isOpen={isAddModalOpen}
+                onRequestClose={handleAddModalClose}
+                onSubmit={handleAddModalSubmit}
+                popName={popName}
+                rackId={rackIdInt}
+                slotId={selectedSlotId}
+            />
+
             <UpdateServerModal
                 isOpen={isUpdateModalOpen}
                 onRequestClose={() => setIsUpdateModalOpen(false)}
-                rackId={rackIdInt}
                 slotId={selectedSlotId}
+                rackId={rackIdInt}
                 onUpdate={handleUpdateServer}
             />
         </div>
