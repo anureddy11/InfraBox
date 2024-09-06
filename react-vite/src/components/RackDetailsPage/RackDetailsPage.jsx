@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import AddServerModal from '../AddServerModal/AddServerModal';
+import UpdateServerModal from '../UpdateServerModal/UpdateServerModal';
+import { thunkGetRackSlots, thunkUpdateRackSlot, thunkDeleteRackSlot } from '../../redux/rack_slots';
 import './RackDetailsPage.css';
-import { thunkGetRackSlots, thunkDeleteRackSlot } from '../../redux/rack_slots';
 
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
@@ -15,18 +15,16 @@ const RackDetailsPage = () => {
     const popRacks = racks[popName] || [];
     const rack = popRacks.find(rack => rack.id === rackIdInt);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedSlotId, setSelectedSlotId] = useState(null);
     const [displaySlots, setDisplaySlots] = useState([]);
 
-    // Fetch rack slots when component mounts
     useEffect(() => {
         if (rackIdInt) {
             dispatch(thunkGetRackSlots(rackIdInt));
         }
     }, [dispatch, rackIdInt]);
 
-    // Update displaySlots when rack data changes
     useEffect(() => {
         if (rack) {
             const slots = Array.from({ length: rack.max_ru }, (_, i) => {
@@ -37,20 +35,20 @@ const RackDetailsPage = () => {
         }
     }, [rack, rackSlots]);
 
-    const handleAddServerClick = (slotId) => {
+    const handleUpdateServerClick = (slotId) => {
         setSelectedSlotId(slotId);
-        setIsModalOpen(true);
+        setIsUpdateModalOpen(true);
     };
 
-    const handleModalClose = () => {
-        setIsModalOpen(false);
-        setSelectedSlotId(null); // Reset the selected slot when the modal is closed
+    const handleUpdateServer = async (slotId, serverType) => {
+        try {
+            await dispatch(thunkUpdateRackSlot(rackIdInt, slotId, { server: serverType }));
+        } catch (error) {
+            console.error('Failed to update rack slot:', error);
+        }
     };
 
-    // Handle the deletion of a server from a slot
     const handleDeleteServerClick = (slotId) => {
-        // Dispatch thunk to delete the slot server
-        // const slotIdInt = parseInt(slotId, 10)
         dispatch(thunkDeleteRackSlot(rackIdInt, slotId));
     };
 
@@ -74,7 +72,22 @@ const RackDetailsPage = () => {
                             <div className={slot.server ? 'rack-slot occupied' : 'rack-slot empty'}>
                                 {slot.server ? `Slot ${slot.slot_id}: ${slot.server}` : `Slot ${slot.slot_id}: Empty`}
                             </div>
-                            {!slot.server && (
+                            {slot.server ? (
+                                <>
+                                    <button
+                                        className="update-server-button"
+                                        onClick={() => handleUpdateServerClick(slot.slot_id)}
+                                    >
+                                        Update Server
+                                    </button>
+                                    <button
+                                        className="delete-server-button"
+                                        onClick={() => handleDeleteServerClick(slot.slot_id)}
+                                    >
+                                        Delete Server
+                                    </button>
+                                </>
+                            ) : (
                                 <button
                                     className="add-server-button"
                                     onClick={() => handleAddServerClick(slot.slot_id)}
@@ -82,24 +95,16 @@ const RackDetailsPage = () => {
                                     Add Server
                                 </button>
                             )}
-                            {slot.server && (
-                                <button
-                                    className="delete-server-button"
-                                    onClick={() => handleDeleteServerClick(slot.slot_id)}
-                                >
-                                    Delete Server
-                                </button>
-                            )}
                         </div>
                     ))}
                 </div>
             </div>
-            <AddServerModal
-                isOpen={isModalOpen}
-                onRequestClose={handleModalClose}
-                popName={popName}
+            <UpdateServerModal
+                isOpen={isUpdateModalOpen}
+                onRequestClose={() => setIsUpdateModalOpen(false)}
                 rackId={rackIdInt}
                 slotId={selectedSlotId}
+                onUpdate={handleUpdateServer}
             />
         </div>
     );

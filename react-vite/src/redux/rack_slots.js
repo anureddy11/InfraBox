@@ -47,7 +47,7 @@ export const thunkGetRackSlots = (rackId) => async (dispatch) => {
 
 // Thunk for adding a new server
 export const thunkAddRackSlot = (rackId, slotData) => async (dispatch) => {
-    console.log(slotData)
+    // console.log(slotData)
     try {
         const response = await fetch(`/api/rack/${rackId}/slot/add`, {
             method: 'POST',
@@ -69,6 +69,7 @@ export const thunkAddRackSlot = (rackId, slotData) => async (dispatch) => {
 
 //Update rack slot
 export const thunkUpdateRackSlot = (rackId, slotId, slotData) => async (dispatch) => {
+    // console.log(rackId,)
     try {
         const response = await fetch(`/api/rack/${rackId}/slot/${slotId}`, {
             method: 'PUT',
@@ -133,27 +134,22 @@ const rackSlotsReducer = (state = initialState, action) => {
                 ],
             };
 
-        case UPDATE_RACK_SLOT:
-            return {
-                ...state,
-                rackSlots: {
-                    ...state.rackSlots,
-                    [action.payload.rackId]: state.rackSlots[action.payload.rackId].map(slot =>
-                        slot.id === action.payload.id ? action.payload : slot
-                    ),
-                },
-            };
-
-            case DELETE_RACK_SLOT:
-                // console.log(action.payload)
-                console.log(state.rackSlots)
+            case UPDATE_RACK_SLOT:
                 return {
                     ...state,
+                    rackSlots: state.rackSlots.map(slot =>
+                        slot.slot_id === action.payload.slot_id && slot.created_at === action.payload.created_at
+                            ? { ...slot, ...action.payload } // Update slot with new data
+                            : slot
+                    ),
+                };
 
-                        // ...state.current_rack,
-                        rackSlots: state.rackSlots.filter(slot =>
-                            slot.slot_id !== action.payload
-                        ),
+            case DELETE_RACK_SLOT:
+                return {
+                    ...state,
+                    rackSlots: state.rackSlots.filter(slot =>
+                        slot.slot_id !== action.payload
+                    ),
                 };
 
         default:
