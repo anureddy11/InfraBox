@@ -26,7 +26,7 @@ def get_all_rack_slots(rack_id):
 @rack_routes.route('/<int:rack_id>/slot/add', methods=['GET', 'POST'])
 def add_slot(rack_id):
     form = AddSlotForm()
-    form.csrf_token.data = request.cookies.get('csrf_token') 
+    form.csrf_token.data = request.cookies.get('csrf_token')
     if form.validate_on_submit():
         slot_id = form.slot_id.data
         server = form.server.data
@@ -50,5 +50,39 @@ def add_slot(rack_id):
         db.session.commit()
 
         return  jsonify(new_slot.to_dict(),), 201
+
+    return jsonify({"errors": form.errors}), 400
+
+# Delete a slot from the rack
+@rack_routes.route('/<int:rack_id>/slot/<int:slot_id>', methods=['DELETE'])
+def delete_slot(rack_id, slot_id):
+    slot = RackSlot.query.filter_by(rack_id=rack_id, slot_id=slot_id).first()
+
+    if not slot:
+        return jsonify({"message": "Slot not found"}), 404
+
+    db.session.delete(slot)
+    db.session.commit()
+
+    return jsonify({"message": "Slot deleted successfully"}), 200
+
+# Update a slot in the rack
+@rack_routes.route('/<int:rack_id>/slot/<int:slot_id>', methods=['PUT'])
+def update_slot(rack_id, slot_id):
+    form = UpdateSlotForm()
+    form.csrf_token.data = request.cookies.get('csrf_token')
+
+    if form.validate_on_submit():
+        slot = RackSlot.query.filter_by(rack_id=rack_id, slot_id=slot_id).first()
+
+        if not slot:
+            return jsonify({"message": "Slot not found"}), 404
+
+        # Update slot details
+        slot.server = form.server.data
+
+        db.session.commit()
+
+        return jsonify(slot.to_dict()), 200
 
     return jsonify({"errors": form.errors}), 400

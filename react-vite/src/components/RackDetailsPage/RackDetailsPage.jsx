@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AddServerModal from '../AddServerModal/AddServerModal';
 import './RackDetailsPage.css';
-import { thunkGetRackSlots } from '../../redux/rack_slots';
+import { thunkGetRackSlots, thunkDeleteRackSlot } from '../../redux/rack_slots';
 
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
@@ -47,6 +47,13 @@ const RackDetailsPage = () => {
         setSelectedSlotId(null); // Reset the selected slot when the modal is closed
     };
 
+    // Handle the deletion of a server from a slot
+    const handleDeleteServerClick = (slotId) => {
+        // Dispatch thunk to delete the slot server
+        // const slotIdInt = parseInt(slotId, 10)
+        dispatch(thunkDeleteRackSlot(rackIdInt, slotId));
+    };
+
     if (!rack) {
         return <div className="no-rack">No rack found with ID {rackId} for Pop {popName}.</div>;
     }
@@ -75,6 +82,14 @@ const RackDetailsPage = () => {
                                     Add Server
                                 </button>
                             )}
+                            {slot.server && (
+                                <button
+                                    className="delete-server-button"
+                                    onClick={() => handleDeleteServerClick(slot.slot_id)}
+                                >
+                                    Delete Server
+                                </button>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -91,4 +106,3 @@ const RackDetailsPage = () => {
 };
 
 export default RackDetailsPage;
-
