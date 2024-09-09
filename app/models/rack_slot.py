@@ -15,6 +15,7 @@ class RackSlot(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     rack_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('racks.id')), nullable=False)
+    slot_id = db.Column(db.String, nullable=False)
     server = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
@@ -26,6 +27,7 @@ class RackSlot(db.Model):
         return {
             'id': self.id,
             'rack_id': self.rack_id,
+            'slot_id':self.slot_id,
             'server': self.server,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat()

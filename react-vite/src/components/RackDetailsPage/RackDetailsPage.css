@@ -1,0 +1,103 @@
+/* src/pages/RackDetailsPage.css */
+
+/* Container for the entire rack details page */
+.rack-details-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 50%; /* Set the maximum width to 50% of the viewport width */
+    margin: 0 auto; /* Center the container horizontally */
+    overflow-y: auto; /* Allow vertical scrolling if content overflows */
+    height: 100vh; /* Ensure the container height is full viewport height */
+    box-sizing: border-box; /* Include padding in width and height calculations */
+}
+
+/* Header for rack details */
+.rack-header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Grid container for rack slots */
+.rack-grid-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Rack grid layout */
+.rack-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Each rack slot */
+.rack-slot-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 2px 0;
+}
+
+/* Slot styling */
+.rack-slot {
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.rack-slot.occupied {
+    background-color: #4caf50;
+    color: white;
+}
+
+.rack-slot.empty {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Add server button styling */
+.add-server-button {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.add-server-button:hover {
+    background-color: #1976d2;
+}
+
+/* Modal styles */
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.5);
+}

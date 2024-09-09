@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import UpdatePoPForm from "../UpdatePoPForm/UpdatePoPForm";
 import { thunkDeletePop } from "../../redux/pops"; // Import the delete thunk
 import "./PopByCityPage.css";
@@ -59,7 +59,11 @@ function PopByCityPage() {
                     {pop.racks && pop.racks.length > 0 ? (
                         pop.racks.map(rack => (
                             <tr key={rack.id}>
-                                <td>{rack.id}</td>
+                                  <td>
+                                    <NavLink to={`/rack/${pop.name}/${rack.id}`}>
+                                        {rack.id}
+                                    </NavLink>
+                                </td>
                                 <td>{rack.name}</td>
                                 <td>{rack.max_kw}</td>
                                 <td>{rack.max_ru}</td>
