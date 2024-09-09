@@ -9,10 +9,12 @@ import './RackDetailsPage.css';
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
     const rackIdInt = parseInt(rackId, 10);
-    // console.log(rackIdInt)
+
+
     const racks = useSelector(state => state.pops.racks);
-    const rackSlots = useSelector(state => state.current_rack.rackSlots);
+    // const rackSlots = useSelector(state => state.current_rack.rackSlots);
     const dispatch = useDispatch();
+    // dispatch(thunkGetRackSlots(rackIdInt))
 
     const popRacks = racks[popName] || [];
     const rack = popRacks.find(rack => rack.id === rackIdInt);
@@ -22,11 +24,14 @@ const RackDetailsPage = () => {
     const [selectedSlotId, setSelectedSlotId] = useState(null);
     const [displaySlots, setDisplaySlots] = useState([]);
 
+
     useEffect(() => {
         if (rackIdInt) {
             dispatch(thunkGetRackSlots(rackIdInt));
         }
     }, [dispatch, rackIdInt]);
+
+    const rackSlots = useSelector(state => state.current_rack.rackSlots);
 
     useEffect(() => {
         if (rack) {

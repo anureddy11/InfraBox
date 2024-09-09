@@ -114,7 +114,7 @@ export const thunkDeleteRackSlot = (rackId, slotId) => async (dispatch) => {
 
 // Initial State
 const initialState = {
-    rackSlots: {}, // e.g., { [rackId]: [slotData] }
+    rackSlots: [], // e.g., { [rackId]: [slotData] }
 };
 
 // Reducer
