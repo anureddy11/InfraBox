@@ -28,7 +28,7 @@ def add_slot(rack_id):
     form = AddSlotForm()
     form.csrf_token.data = request.cookies.get('csrf_token')
     if form.validate_on_submit():
-        slot_id = form.slot_id.data
+        slot_id = str(form.slot_id.data)
         server = form.server.data
 
 
