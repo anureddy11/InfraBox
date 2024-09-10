@@ -35,3 +35,11 @@
     padding: 10px;
     text-align: center;
 }
+
+.status-active {
+    color: green;
+}
+
+.status-out-of-production {
+    color: red;
+}

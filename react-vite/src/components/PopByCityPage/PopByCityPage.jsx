@@ -29,9 +29,13 @@ function PopByCityPage() {
         }
     };
 
+     // Determine status class based on pop.status
+     const statusClass = pop.status === 'active' ? 'status-active' : 'status-out-of-production';
+
     return (
         <div className="pop-by-city-container">
             <h1>Welcome to {city}'s page</h1>
+            <h2>Pop Status: <span className={statusClass}>{pop.status}</span></h2> {/* Display status */}
             <h2>Rack Information</h2>
             <div className="button-container">
                 <button className="edit-button" onClick={handleEditClick}>
