@@ -58,7 +58,7 @@ const AllRacksPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No racks available for the selected city.</p>
+                    <p>Please select a city with racks</p>
                 )}
             </div>
         </div>
