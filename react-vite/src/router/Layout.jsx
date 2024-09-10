@@ -17,24 +17,17 @@ export default function Layout() {
   }, [dispatch]);
 
   return (
-    <>
-      <ModalProvider>
-        <Navigation />
-        <div className="layout-container">
-          {/* Check if the session is loaded */}
-          {isLoaded && (
-            <>
-              <nav>
-                <ProfileButton /> {/* Display the ProfileButton */}
-              </nav>
-              <main className="main-content">
-                <Outlet /> {/* Render child routes */}
-              </main>
-            </>
-          )}
-        </div>
-        <Modal /> {/* Render the modal here */}
-      </ModalProvider>
-    </>
+    <ModalProvider>
+      <Navigation />
+      <div className="layout-container">
+        <nav>
+          <ProfileButton />
+        </nav>
+        <main className="main-content">
+          {isLoaded && <Outlet />} {/* Render nested routes here */}
+        </main>
+      </div>
+      <Modal /> {/* Render the modal here */}
+    </ModalProvider>
   );
 }

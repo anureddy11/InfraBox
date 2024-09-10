@@ -9,6 +9,8 @@ import SignupFormModal from "../SignupFormModal";
 function ProfileButton() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showSignupForm, setShowSignupForm] = useState(false);
   const user = useSelector((store) => store.session.user);
   const ulRef = useRef();
 
@@ -23,6 +25,8 @@ function ProfileButton() {
     const closeMenu = (e) => {
       if (ulRef.current && !ulRef.current.contains(e.target)) {
         setShowMenu(false);
+        setShowLoginForm(false);
+        setShowSignupForm(false);
       }
     };
 
@@ -31,7 +35,11 @@ function ProfileButton() {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  const closeMenu = () => setShowMenu(false);
+  const closeMenu = () => {
+    setShowMenu(false);
+    setShowLoginForm(false);
+    setShowSignupForm(false);
+  };
 
   const logout = (e) => {
     e.preventDefault();
@@ -56,16 +64,26 @@ function ProfileButton() {
             </>
           ) : (
             <>
-              <OpenModalMenuItem
-                itemText="Log In"
-                onItemClick={closeMenu}
-                modalComponent={<LoginFormModal />}
-              />
-              <OpenModalMenuItem
-                itemText="Sign Up"
-                onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
-              />
+              <li>
+                <button onClick={() => setShowLoginForm(!showLoginForm)}>
+                  Log In
+                </button>
+                {showLoginForm && (
+                  <div className="form-container">
+                    <LoginFormModal closeForm={closeMenu} />
+                  </div>
+                )}
+              </li>
+              <li>
+                <button onClick={() => setShowSignupForm(!showSignupForm)}>
+                  Sign Up
+                </button>
+                {showSignupForm && (
+                  <div className="form-container">
+                    <SignupFormModal closeForm={closeMenu} />
+                  </div>
+                )}
+              </li>
             </>
           )}
         </ul>
