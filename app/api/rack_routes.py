@@ -54,7 +54,7 @@ def add_slot(rack_id):
     return jsonify({"errors": form.errors}), 400
 
 # Delete a slot from the rack
-@rack_routes.route('/<int:rack_id>/slot/<int:slot_id>', methods=['DELETE'])
+@rack_routes.route('/<int:rack_id>/slot/<string:slot_id>', methods=['DELETE'])
 def delete_slot(rack_id, slot_id):
     slot = RackSlot.query.filter_by(rack_id=rack_id, slot_id=slot_id).first()
 
@@ -67,7 +67,7 @@ def delete_slot(rack_id, slot_id):
     return jsonify({"message": "Slot deleted successfully"}), 200
 
 # Update a slot in the rack
-@rack_routes.route('/<int:rack_id>/slot/<int:slot_id>', methods=['PUT'])
+@rack_routes.route('/<int:rack_id>/slot/<string:slot_id>', methods=['PUT'])
 def update_slot(rack_id, slot_id):
     form = UpdateSlotForm()
     form.csrf_token.data = request.cookies.get('csrf_token')
