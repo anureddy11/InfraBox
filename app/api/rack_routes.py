@@ -23,7 +23,7 @@ def get_all_rack_slots(rack_id):
     return jsonify(slots_data), 200
 
 
-@rack_routes.route('/<int:rack_id>/slot/add', methods=['GET', 'POST'])
+@rack_routes.route('/<int:rack_id>/slot/add', methods=['POST'])
 def add_slot(rack_id):
     form = AddSlotForm()
     form.csrf_token.data = request.cookies.get('csrf_token')
@@ -49,7 +49,7 @@ def add_slot(rack_id):
         db.session.add(new_slot)
         db.session.commit()
 
-        return  jsonify(new_slot.to_dict(),), 201
+        return  jsonify(new_slot.to_dict()), 201
 
     return jsonify({"errors": form.errors}), 400
 

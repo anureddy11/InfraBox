@@ -1,28 +1,40 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
-import "./Layout.css";
+import ProfileButton from "../components/Navigation/ProfileButton";
+import "./Layout.css"; // Import the CSS file
 
 export default function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
-    <div className="layout-container">
-      <Navigation />
-      <main className="main-content">
-        {isLoaded && <Outlet />}
-      </main>
+    <>
       <ModalProvider>
-        <Modal />
+        <Navigation />
+        <div className="layout-container">
+          {/* Check if the session is loaded */}
+          {isLoaded && (
+            <>
+              <nav>
+                <ProfileButton /> {/* Display the ProfileButton */}
+              </nav>
+              <main className="main-content">
+                <Outlet /> {/* Render child routes */}
+              </main>
+            </>
+          )}
+        </div>
+        <Modal /> {/* Render the modal here */}
       </ModalProvider>
-    </div>
+    </>
   );
 }
