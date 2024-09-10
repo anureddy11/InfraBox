@@ -24,6 +24,7 @@ const AddServerModal = ({ isOpen, onRequestClose, rackId, slotId }) => {
             slot_id: slotId,
             server: serverType
         };
+        console.log(serverSlotData)
         await dispatch(thunkAddRackSlot(rackId, serverSlotData));
         await dispatch(thunkGetRackSlots(rackId)); // Refresh the rack slots after adding
         onRequestClose();
