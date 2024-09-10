@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import UpdatePoPForm from "../UpdatePoPForm/UpdatePoPForm";
-import { thunkDeletePop } from "../../redux/pops"; // Import the delete thunk
+import { thunkDeletePop, thunkGetPops } from "../../redux/pops"; // Import the delete thunk
 import "./PopByCityPage.css";
 
 function PopByCityPage() {
@@ -13,6 +13,11 @@ function PopByCityPage() {
     const dispatch = useDispatch();
 
     const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        // Dispatch the thunk action to fetch all pops
+        dispatch(thunkGetPops());
+    }, [dispatch]);
 
     if (!pop) {
         return <div className="pop-by-city-container">Pop data not found for {city}</div>;

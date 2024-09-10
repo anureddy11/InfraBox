@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateNewPop = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [city, setCity] = useState('');
   const [status, setStatus] = useState('');
@@ -22,7 +22,7 @@ const CreateNewPop = () => {
         region: selectedCity.region,
         status,
       })).then(() => {
-        navigate('/all'); // Navigate to /all after successful submission
+        navigate(`/pop/${name}`); // Navigate to /all after successful submission
       }).catch(error => {
         console.error('Failed to create pop:', error);
       });
