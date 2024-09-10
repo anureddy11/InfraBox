@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet,  Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
@@ -15,6 +15,17 @@ export default function Layout() {
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+
+   // If the user is not logged in, redirect them to the login page
+   if (isLoaded && !sessionUser) {
+    return (
+      <nav>
+      <ProfileButton />
+    </nav>
+    )
+  }
+
 
   return (
     <ModalProvider>

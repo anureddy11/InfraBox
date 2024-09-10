@@ -1,25 +1,29 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
+import { Navigate, useNavigate } from "react-router-dom";
 import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
+
+  // If the user is already logged in, redirect to the homepage
+  if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
+        confirmPassword: "Confirm Password field must be the same as the Password field",
       });
     }
 
@@ -32,9 +36,9 @@ function SignupFormModal() {
     );
 
     if (serverResponse) {
-      setErrors(serverResponse);
+      setErrors(serverResponse); // Handle server validation errors
     } else {
-      closeModal();
+      navigate("/"); // Redirect to homepage upon successful signup
     }
   };
 
@@ -53,6 +57,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
+
         <label>
           Username
           <input
@@ -63,6 +68,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && <p>{errors.username}</p>}
+
         <label>
           Password
           <input
@@ -73,6 +79,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
+
         <label>
           Confirm Password
           <input
@@ -83,6 +90,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+
         <button type="submit">Sign Up</button>
       </form>
     </>
