@@ -50,6 +50,64 @@ export const router = createBrowserRouter([
         path: "/rack/:popName/:rackId/:slotId",
         element: <AddServer />,
       },
+      {
+        path: "/contracts",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      },
+      {
+        path: "/elevations",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      },
+      {
+        path: "/new-bom",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      },
+      {
+        path: "/power-utilization",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      },
+      {
+        path: "/spine-balance",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      },
+      {
+        path: "/devices",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      },
+      ,
+      {
+        path: "/device-roles",
+        element: (
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h1>Feature under construction</h1>
+          </div>
+        ),
+      }
+
 
 
     ],
