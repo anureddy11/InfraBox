@@ -35,7 +35,7 @@ export const thunkDeletePop = (name) => async(dispatch) =>{
         });
 
         if (!response.ok) {
-            throw new Error('Failed to delete payment');
+            throw new Error('Failed to delete pio');
         }
 
         dispatch(deletePop(name));
@@ -152,12 +152,11 @@ const popsReducer = (state = initialState, action) => {
             };
 
         case DELETE_POP:
+            const updatedPops = { ...state.pops };
+            delete updatedPops[action.payload];
             return {
                 ...state,
-                pops: {
-                     ...state.pops,
-                    [action.payload.name]: action.payload
-                }
+                pops: updatedPops
             };
 
 

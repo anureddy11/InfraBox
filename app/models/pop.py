@@ -23,7 +23,7 @@ class Pop(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
 
     # Relationships
-    racks = db.relationship('Rack', back_populates='pop')
+    racks = db.relationship('Rack', back_populates='pop', cascade="all, delete-orphan", lazy=True)
 
     # Method to convert model instance to dictionary
     def to_dict(self):

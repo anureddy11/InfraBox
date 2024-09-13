@@ -23,7 +23,7 @@ class Rack(db.Model):
 
     # Relationships
     pop = db.relationship('Pop', back_populates='racks')
-    rack_slots = db.relationship('RackSlot', back_populates='rack')
+    rack_slots = db.relationship('RackSlot', back_populates='rack',cascade="all, delete-orphan", lazy=True)
 
 
     def to_dict(self):
