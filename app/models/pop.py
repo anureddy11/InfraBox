@@ -49,5 +49,6 @@ class Pop(db.Model):
             'region': self.region,
             'status': self.status,
             'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
+            'updated_at': self.updated_at.isoformat(),
+            'rack_count': len(self.racks)  # Include rack count
         }

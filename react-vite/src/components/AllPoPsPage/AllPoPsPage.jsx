@@ -37,7 +37,7 @@ const PopsTable = () => {
                 <td>{pop.country}</td>
                 <td>{pop.region}</td>
                 <td>{pop.status}</td>
-                <td>{pop.racks ? pop.racks.length : 0}</td>
+                <td>{pop.rack_count ? pop.rack_count : 0}</td>
               </tr>
             );
           })}
