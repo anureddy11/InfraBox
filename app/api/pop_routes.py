@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from app.models.db import db, environment, SCHEMA
 from app.models.pop import Pop
 from app.forms.pop_form import PopForm
+from sqlalchemy.orm import joinedload
 
 pop_routes = Blueprint('pop', __name__, url_prefix='/pop')
 
@@ -11,7 +12,10 @@ pop_routes = Blueprint('pop', __name__, url_prefix='/pop')
 @pop_routes.route('/all', methods=["GET"])
 @login_required
 def get_all_pops():
-    pops = Pop.query.all()
+    # pops = Pop.query.all()
+
+    # Use joinedload to fetch racks along with pops in one query
+    pops = Pop.query.options(joinedload(Pop.racks)).all()
 
     # Convert each Pop object to a dictionary
     pops_list = [pop.to_dict() for pop in pops]

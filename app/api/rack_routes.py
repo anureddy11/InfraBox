@@ -6,6 +6,9 @@ from app.models.db import db
 from app.models.rack import Rack
 from app.models.rack_slot import RackSlot
 from app.forms.rack_slot_form import AddSlotForm, UpdateSlotForm
+from sqlalchemy.orm import joinedload
+
+
 
 rack_routes = Blueprint('rack', __name__, url_prefix='/rack')
 
