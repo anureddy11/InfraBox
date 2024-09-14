@@ -38,3 +38,16 @@ class Pop(db.Model):
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat()
         }
+
+    # Method to convert model instance to dictionary
+    def to_dict_no_rack(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'city': self.city,
+            'country': self.country,
+            'region': self.region,
+            'status': self.status,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }

@@ -18,7 +18,7 @@ def get_all_pops():
     pops = Pop.query.options(joinedload(Pop.racks)).all()
 
     # Convert each Pop object to a dictionary
-    pops_list = [pop.to_dict() for pop in pops]
+    pops_list = [pop.to_dict_no_rack() for pop in pops]
 
     return jsonify(pops_list)
 
