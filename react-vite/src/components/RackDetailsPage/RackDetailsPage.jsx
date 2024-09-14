@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AddServerModal from '../AddServerModal/AddServerModal';
 import UpdateServerModal from '../UpdateServerModal/UpdateServerModal';
-import { thunkUpdateRackSlot, thunkDeleteRackSlot, thunkAddRackSlot } from '../../redux/rack_slots';
+import { thunkUpdateRackSlot, thunkDeleteRackSlot, thunkAddRackSlot} from '../../redux/rack_slots';
+import { thunkGetPopByCity } from '../../redux/pops';
 import './RackDetailsPage.css';
 
 const RackDetailsPage = () => {
@@ -21,7 +22,7 @@ const RackDetailsPage = () => {
     useEffect(() => {
         if (!currentPop || currentPop.name !== popName) {
             // Ideally, you would dispatch an action to fetch currentPop based on popName
-            // dispatch(thunkGetPopByName(popName));
+            dispatch(thunkGetPopByCity(popName));
         }
     }, [dispatch, popName, currentPop]);
 
@@ -50,7 +51,7 @@ const RackDetailsPage = () => {
         };
         await dispatch(thunkAddRackSlot(rackIdInt, slotData));
         // You might need to refresh currentPop if it changes after the add operation
-        // dispatch(thunkGetPopByName(popName));
+        dispatch(thunkGetPopByCity(popName));
         setIsAddModalOpen(false);
     };
 
@@ -68,7 +69,7 @@ const RackDetailsPage = () => {
         try {
             await dispatch(thunkUpdateRackSlot(rackIdInt, slotId, { server: serverType }));
             // Refresh the rack slots if needed
-            // dispatch(thunkGetPopByName(popName));
+            dispatch(thunkGetPopByCity(popName));
             setIsUpdateModalOpen(false);
         } catch (error) {
             console.error('Failed to update rack slot:', error);
@@ -78,7 +79,7 @@ const RackDetailsPage = () => {
     const handleDeleteServerClick = (slotId) => {
         dispatch(thunkDeleteRackSlot(rackIdInt, slotId));
         // Refresh the rack slots if needed
-        // dispatch(thunkGetPopByName(popName));
+        dispatch(thunkGetPopByCity(popName));
     };
 
     if (!currentPop || !currentPop.racks.find(rack => rack.id === rackIdInt)) {
