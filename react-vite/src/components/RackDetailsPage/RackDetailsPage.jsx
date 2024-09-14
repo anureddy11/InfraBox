@@ -3,45 +3,40 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import AddServerModal from '../AddServerModal/AddServerModal';
 import UpdateServerModal from '../UpdateServerModal/UpdateServerModal';
-import { thunkGetRackSlots, thunkUpdateRackSlot, thunkDeleteRackSlot, thunkAddRackSlot } from '../../redux/rack_slots';
+import { thunkUpdateRackSlot, thunkDeleteRackSlot, thunkAddRackSlot } from '../../redux/rack_slots';
 import './RackDetailsPage.css';
 
 const RackDetailsPage = () => {
     const { popName, rackId } = useParams();
     const rackIdInt = parseInt(rackId, 10);
 
-
-    const racks = useSelector(state => state.pops.racks);
-    // const rackSlots = useSelector(state => state.current_rack.rackSlots);
     const dispatch = useDispatch();
-    // dispatch(thunkGetRackSlots(rackIdInt))
-
-    const popRacks = racks[popName] || [];
-    const rack = popRacks.find(rack => rack.id === rackIdInt);
+    const currentPop = useSelector(state => state.pops.currentPop);
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedSlotId, setSelectedSlotId] = useState(null);
     const [displaySlots, setDisplaySlots] = useState([]);
 
+    useEffect(() => {
+        if (!currentPop || currentPop.name !== popName) {
+            // Ideally, you would dispatch an action to fetch currentPop based on popName
+            // dispatch(thunkGetPopByName(popName));
+        }
+    }, [dispatch, popName, currentPop]);
 
     useEffect(() => {
-        if (rackIdInt) {
-            dispatch(thunkGetRackSlots(rackIdInt));
+        if (currentPop) {
+            const rack = currentPop.racks.find(rack => rack.id === rackIdInt);
+            if (rack) {
+                const slots = Array.from({ length: rack.max_ru }, (_, i) => {
+                    const slot = rack.rack_slots.find(slot => parseInt(slot.slot_id) === i + 1);
+                    return slot ? slot : { id: null, slot_id: i + 1, server: null };
+                });
+                setDisplaySlots(slots);
+            }
         }
-    }, [dispatch, rackIdInt]);
-
-    const rackSlots = useSelector(state => state.current_rack.rackSlots);
-
-    useEffect(() => {
-        if (rack) {
-            const slots = Array.from({ length: rack.max_ru }, (_, i) => {
-                const slot = rackSlots.find(slot => parseInt(slot.slot_id) === i + 1);
-                return slot ? slot : { id: null, slot_id: i + 1, server: null };
-            });
-            setDisplaySlots(slots);
-        }
-    }, [rack, rackSlots]);
+    }, [currentPop, rackIdInt]);
 
     const handleAddServerClick = (slotId) => {
         setSelectedSlotId(slotId);
@@ -49,13 +44,13 @@ const RackDetailsPage = () => {
     };
 
     const handleAddModalSubmit = async (serverType) => {
-        console.log(rackIdInt)
         const slotData = {
             slot_id: selectedSlotId,
             server: serverType
         };
         await dispatch(thunkAddRackSlot(rackIdInt, slotData));
-        dispatch(thunkGetRackSlots(rackIdInt));
+        // You might need to refresh currentPop if it changes after the add operation
+        // dispatch(thunkGetPopByName(popName));
         setIsAddModalOpen(false);
     };
 
@@ -72,7 +67,8 @@ const RackDetailsPage = () => {
     const handleUpdateServer = async (slotId, serverType) => {
         try {
             await dispatch(thunkUpdateRackSlot(rackIdInt, slotId, { server: serverType }));
-            dispatch(thunkGetRackSlots(rackIdInt));
+            // Refresh the rack slots if needed
+            // dispatch(thunkGetPopByName(popName));
             setIsUpdateModalOpen(false);
         } catch (error) {
             console.error('Failed to update rack slot:', error);
@@ -81,12 +77,15 @@ const RackDetailsPage = () => {
 
     const handleDeleteServerClick = (slotId) => {
         dispatch(thunkDeleteRackSlot(rackIdInt, slotId));
-        dispatch(thunkGetRackSlots(rackIdInt));
+        // Refresh the rack slots if needed
+        // dispatch(thunkGetPopByName(popName));
     };
 
-    if (!rack) {
+    if (!currentPop || !currentPop.racks.find(rack => rack.id === rackIdInt)) {
         return <div className="no-rack">No rack found with ID {rackId} for Pop {popName}.</div>;
     }
+
+    const rack = currentPop.racks.find(rack => rack.id === rackIdInt);
 
     return (
         <div className="rack-details-container">
