@@ -3,6 +3,7 @@ const GET_POPS = 'GET_POPS';
 const CREATE_POP = 'CREATE_POP';
 const UPDATE_POP = 'UPDATE_POP';
 const DELETE_POP = 'DELETE_POP';
+const GET_POP_BY_CITY = 'GET_POP_BY_CITY';
 
 // Action Creator
 const getPops = (popsData) => ({
@@ -25,6 +26,25 @@ const deletePop = (popName) => ({
     payload: popName,
 });
 
+// Action Creator for getting a single pop by city
+const getPopByCity = (popData) => ({
+    type: GET_POP_BY_CITY,
+    payload: popData,
+});
+// Thunk for Fetching a Pop by City
+export const thunkGetPopByCity = (name) => async (dispatch) => {
+    try {
+        const response = await fetch(`/api/pop/${name}`);
+        const data = await response.json();
+        if (response.ok) {
+            dispatch(getPopByCity(data));
+        } else {
+            console.error("Failed to fetch pop:", data.error);
+        }
+    } catch (error) {
+        console.error("Failed to fetch pop:", error);
+    }
+};
 
 //Delete a Pop
 
@@ -111,7 +131,8 @@ export const thunkUpdatePop = (popName, popData) => async (dispatch) => {
 const initialState = {
     pops: [],
     racks: [],
-    currentRack: null
+    currentRack: null,
+    currentPop: null  // Add a field for the current pop
 };
 
 // Pops Reducer
@@ -158,6 +179,12 @@ const popsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 pops: updatedPops
+            };
+
+        case GET_POP_BY_CITY:
+            return {
+                ...state,
+                currentPop: action.payload
             };
 
         default:

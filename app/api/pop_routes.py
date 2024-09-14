@@ -30,10 +30,10 @@ def get_all_pops():
 
 
 # Query the pop by name
-@pop_routes.route('/<string:city>', methods=["GET"])
+@pop_routes.route('/<string:name>', methods=["GET"])
 @login_required
-def get_pop_by_city(city):
-    pop = Pop.query.filter_by(city=city).first()
+def get_pop_by_city(name):
+    pop = Pop.query.filter_by(name=name).first()
 
     if pop:
         return jsonify(pop.to_dict()), 200  # Assuming your Pop model has a to_dict method
