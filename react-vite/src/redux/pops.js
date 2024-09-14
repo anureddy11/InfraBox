@@ -44,21 +44,22 @@ export const thunkDeletePop = (name) => async(dispatch) =>{
     }
 }
 
-// Thunk for Fetching Pops
-export const thunkGetPops = () => async (dispatch) => {
+// General Thunk for Fetching Pops
+export const thunkGetPops = (includeRacks = true) => async (dispatch) => {
     try {
-        const response = await fetch('/api/pop/all');
+        // Include 'include_racks' query parameter based on the input
+        const response = await fetch(`/api/pop/all?include_racks=${includeRacks}`);
         const data = await response.json();
         if (response.ok) {
-            dispatch(getPops(data));
+            dispatch(getPops(data));  // Use the appropriate action to store the pops
+        } else {
+            console.error("Failed to fetch pops:", data.message);
         }
-        // No error dispatch; just handle successful response
-        // console.log(data)
     } catch (error) {
-        // Handle error here if needed
         console.error("Failed to fetch pops:", error);
     }
 };
+
 
 // Thunk for Creating a New Pop
 export const thunkCreatePop = (popData) => async (dispatch) => {
@@ -158,7 +159,6 @@ const popsReducer = (state = initialState, action) => {
                 ...state,
                 pops: updatedPops
             };
-
 
         default:
             return state;

@@ -12,15 +12,21 @@ pop_routes = Blueprint('pop', __name__, url_prefix='/pop')
 @pop_routes.route('/all', methods=["GET"])
 @login_required
 def get_all_pops():
-    # pops = Pop.query.all()
+    include_racks = request.args.get('include_racks', 'true').lower() == 'true'
 
-    # Use joinedload to fetch racks along with pops in one query
-    pops = Pop.query.options(joinedload(Pop.racks)).all()
-
-    # Convert each Pop object to a dictionary
-    pops_list = [pop.to_dict() for pop in pops]
+    if include_racks:
+        # Fetch all pops with racks
+        pops = Pop.query.options(joinedload(Pop.racks)).all()
+        # Convert each Pop object to a dictionary with racks
+        pops_list = [pop.to_dict() for pop in pops]
+    else:
+        # Fetch all pops without racks
+        pops = Pop.query.all()
+        # Convert each Pop object to a dictionary without racks
+        pops_list = [pop.to_dict_no_rack() for pop in pops]
 
     return jsonify(pops_list)
+
 
 
 # Query the pop by name

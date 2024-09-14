@@ -36,3 +36,14 @@ class Rack(db.Model):
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
+
+    def to_dict_count_slots(self):
+         return {
+            "id": self.id,
+            "name": self.name,
+            "max_ru": self.max_ru,
+            "max_kw": self.max_kw,
+            'count_rack_slots': len(self.rack_slots),  # Count the number of rack slots
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+        }

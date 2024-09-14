@@ -10,7 +10,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetPops } from '../../redux/pops'; // Adjust the path as needed
+import { thunkGetPops} from '../../redux/pops'; // Adjust the path as needed
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -30,7 +30,7 @@ const LandingPage = () => {
     const cities = useSelector(state => state.cities); // Assuming you have cities in your state
 
     useEffect(() => {
-        dispatch(thunkGetPops());
+        dispatch(thunkGetPops(false));
     }, [dispatch]);
 
     return (
