@@ -12,8 +12,6 @@ function PopByCityPage() {
     const dispatch = useDispatch();
 
     const pop = useSelector(state => state.pops.currentPop);
-    const current_rack = useSelector(state => state.current_rack.racks); // Access the currentPop state
-
     const [isEditing, setIsEditing] = useState(false);
     const [isCreatingRack, setIsCreatingRack] = useState(false); // State for creating rack
     const [rackFormData, setRackFormData] = useState({ name: '', max_kw: '', max_ru: '' });
@@ -21,7 +19,7 @@ function PopByCityPage() {
     useEffect(() => {
         // Dispatch the thunk action to fetch the pop by city
         dispatch(thunkGetPopByCity(city));
-    }, [city, dispatch, current_rack]);
+    }, [city, dispatch]);
 
     if (!pop) {
         return <div className="pop-by-city-container">Pop data not found for {city}</div>;
@@ -62,8 +60,16 @@ function PopByCityPage() {
 
         console.log(rackData);
 
-        // Dispatch the corrected thunk without passing pop.id directly
-        dispatch(thunkAddRack(rackData));
+        // Dispatch the thunk to add the rack
+        dispatch(thunkAddRack(rackData))
+            .then(() => {
+                // Re-fetch pop details after adding a rack
+                dispatch(thunkGetPopByCity(city));
+            })
+            .catch(error => {
+                // Handle any errors that occur during the dispatch
+                console.error("Error adding rack:", error);
+            });
 
         // Reset form state and toggle the creation mode
         setIsCreatingRack(false);
@@ -72,7 +78,15 @@ function PopByCityPage() {
 
     const handleDeleteRack = (rackId) => {
         if (window.confirm("Are you sure you want to delete this rack?")) {
-            dispatch(thunkDeleteRack(pop.id, rackId));
+            dispatch(thunkDeleteRack(rackId)) // Assume thunkDeleteRack only requires rackId
+                .then(() => {
+                    // Re-fetch pop details after deleting a rack
+                    dispatch(thunkGetPopByCity(city));
+                })
+                .catch(error => {
+                    // Handle any errors that occur during the dispatch
+                    console.error("Error deleting rack:", error);
+                });
         }
     };
 

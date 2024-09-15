@@ -28,19 +28,27 @@ export const deleteRackSlot = (rackSlotId) => ({
     payload: rackSlotId,
 });
 
-// Thunk for fetching all rack slots for a given rack
 export const thunkGetRackSlots = (rackId) => async (dispatch) => {
     try {
         const response = await fetch(`/api/rack-slots/${rackId}/slots`);
-        console.log(response)
         const data = await response.json();
+
         if (response.ok) {
-            dispatch(getRackSlots(data));
+            // Check if data is an empty array
+            if (Array.isArray(data)) {
+                // Dispatch the data (empty array if no slots are found)
+                dispatch(getRackSlots(data));
+            } else {
+                console.error('Unexpected data format:', data);
+                // Optionally, handle unexpected data format
+            }
         } else {
             console.error('Failed to fetch rack slots:', data);
+            // Optionally, handle errors
         }
     } catch (error) {
         console.error('Error fetching rack slots:', error);
+        // Optionally, handle errors
     }
 };
 

@@ -17,12 +17,10 @@ def get_all_rack_slots(rack_id):
     # Fetch all slots for the given rack_id
     slots = RackSlot.query.filter_by(rack_id=rack_id).all()
 
-    if not slots:
-        return jsonify({"message": "No slots found for the given rack_id"}), 404
-
     # Convert the slots to a dictionary
     slots_data = [slot.to_dict() for slot in slots]
 
+    # Return empty array if no slots found
     return jsonify(slots_data), 200
 
 
