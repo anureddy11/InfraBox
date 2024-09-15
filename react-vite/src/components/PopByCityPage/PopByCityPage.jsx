@@ -63,10 +63,7 @@ function PopByCityPage() {
         console.log(rackData);
 
         // Dispatch the corrected thunk without passing pop.id directly
-        dispatch(thunkAddRack(rackData)).then(() => {
-            // Re-fetch pop details after adding a rack
-            dispatch(thunkGetPopByCity(city));
-        });
+        dispatch(thunkAddRack(rackData));
 
         // Reset form state and toggle the creation mode
         setIsCreatingRack(false);

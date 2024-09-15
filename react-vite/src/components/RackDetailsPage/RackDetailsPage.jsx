@@ -13,7 +13,7 @@ const RackDetailsPage = () => {
 
     const dispatch = useDispatch();
     const currentPop = useSelector(state => state.pops.currentPop);
-    const rackSlots = useSelector(state => state.current_rack.rackSlots || []);
+    const rackSlots = useSelector(state => state.current_rack_slots.rackSlots || []);
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
