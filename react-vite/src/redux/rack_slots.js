@@ -31,7 +31,7 @@ export const deleteRackSlot = (rackSlotId) => ({
 // Thunk for fetching all rack slots for a given rack
 export const thunkGetRackSlots = (rackId) => async (dispatch) => {
     try {
-        const response = await fetch(`/api/rack/${rackId}/slots`);
+        const response = await fetch(`/api/rack-slots/${rackId}/slots`);
         console.log(response)
         const data = await response.json();
         if (response.ok) {
@@ -50,7 +50,7 @@ export const thunkAddRackSlot = (rackId, slotData) => async (dispatch) => {
     // console.log(slotData)
     console.log(rackId)
     try {
-        const response = await fetch(`/api/rack/${rackId}/slot/add`, {
+        const response = await fetch(`/api/rack-slots/${rackId}/slot/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const thunkAddRackSlot = (rackId, slotData) => async (dispatch) => {
 export const thunkUpdateRackSlot = (rackId, slotId, slotData) => async (dispatch) => {
     // console.log(rackId,)
     try {
-        const response = await fetch(`/api/rack/${rackId}/slot/${slotId}`, {
+        const response = await fetch(`/api/rack-slots/${rackId}/slot/${slotId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export const thunkUpdateRackSlot = (rackId, slotId, slotData) => async (dispatch
 export const thunkDeleteRackSlot = (rackId, slotId) => async (dispatch) => {
     console.log(rackId,slotId)
     try {
-        const response = await fetch(`/api/rack/${rackId}/slot/${slotId}`, {
+        const response = await fetch(`/api/rack-slots/${rackId}/slot/${slotId}`, {
             method: 'DELETE',
         });
 
