@@ -27,7 +27,7 @@ const RackDetailsPage = () => {
 
     useEffect(() => {
         dispatch(thunkGetRackSlots(rackIdInt));
-    }, [dispatch, rackIdInt,rackSlots]);
+    }, [dispatch, rackIdInt]);
 
     // Create a full list of rack slots, initializing empty slots where needed
     const generateFullRackSlots = () => {

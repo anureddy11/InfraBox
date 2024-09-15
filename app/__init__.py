@@ -8,7 +8,8 @@ from .models import db, User, Pop
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.pop_routes import pop_routes
-from .api.rack_slots_routes import rack_routes
+from .api.rack_slots_routes import rack_slot_routes
+from .api.rack_routes import rack_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -31,7 +32,8 @@ app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(pop_routes, url_prefix='/api/pop')
-app.register_blueprint(rack_routes, url_prefix='/api/rack-slots')
+app.register_blueprint(rack_slot_routes, url_prefix='/api/rack-slots')
+app.register_blueprint(rack_routes, url_prefix='/api/racks')
 db.init_app(app)
 Migrate(app, db)
 

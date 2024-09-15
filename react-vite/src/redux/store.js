@@ -8,11 +8,13 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import popsReducer from "./pops";
 import rackSlotsReducer from "./rack_slots";
+import racksReducer from "./racks";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   pops: popsReducer,
-  current_rack: rackSlotsReducer
+  current_rack_slots: rackSlotsReducer,
+  current_rack: racksReducer
 });
 
 let enhancer;

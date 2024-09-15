@@ -10,9 +10,9 @@ from sqlalchemy.orm import joinedload
 
 
 
-rack_routes = Blueprint('rack-slots', __name__, url_prefix='/rack-slots')
+rack_slot_routes = Blueprint('rack-slots', __name__, url_prefix='/rack-slots')
 
-@rack_routes.route('/<int:rack_id>/slots', methods=['GET'])
+@rack_slot_routes.route('/<int:rack_id>/slots', methods=['GET'])
 def get_all_rack_slots(rack_id):
     # Fetch all slots for the given rack_id
     slots = RackSlot.query.filter_by(rack_id=rack_id).all()
@@ -26,7 +26,7 @@ def get_all_rack_slots(rack_id):
     return jsonify(slots_data), 200
 
 
-@rack_routes.route('/<int:rack_id>/slot/add', methods=['POST'])
+@rack_slot_routes.route('/<int:rack_id>/slot/add', methods=['POST'])
 def add_slot(rack_id):
     form = AddSlotForm()
     form.csrf_token.data = request.cookies.get('csrf_token')
@@ -57,7 +57,7 @@ def add_slot(rack_id):
     return jsonify({"errors": form.errors}), 400
 
 # Delete a slot from the rack
-@rack_routes.route('/<int:rack_id>/slot/<string:slot_id>', methods=['DELETE'])
+@rack_slot_routes.route('/<int:rack_id>/slot/<string:slot_id>', methods=['DELETE'])
 def delete_slot(rack_id, slot_id):
     slot = RackSlot.query.filter_by(rack_id=rack_id, slot_id=slot_id).first()
 
@@ -70,7 +70,7 @@ def delete_slot(rack_id, slot_id):
     return jsonify({"message": "Slot deleted successfully"}), 200
 
 # Update a slot in the rack
-@rack_routes.route('/<int:rack_id>/slot/<string:slot_id>', methods=['PUT'])
+@rack_slot_routes.route('/<int:rack_id>/slot/<string:slot_id>', methods=['PUT'])
 def update_slot(rack_id, slot_id):
     form = UpdateSlotForm()
     form.csrf_token.data = request.cookies.get('csrf_token')
